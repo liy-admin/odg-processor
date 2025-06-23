@@ -1,6 +1,6 @@
 {
   "name": "odg-processor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.js package for processing ODG (OpenDocument Graphics) files using LibreOffice API",
   "main": "index.js",
   "scripts": {
