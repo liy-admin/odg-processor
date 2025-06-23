@@ -1,0 +1,39 @@
+# 测试和示例文件
+test.js
+example.js
+payroll.odg
+payroll.pdf
+payroll_modified.odg
+payroll_single.odg
+
+# Python虚拟环境
+venv/
+__pycache__/
+*.pyc
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Git和IDE
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# 临时文件
+*.log
+*.tmp
+*.temp
+
+# 部署相关
+DEPLOY.md
+scripts/
+
+# 其他开发文件
+odg_operations.py
+odg_advanced_examples.py
+test_environment.py
+pdf.js 

@@ -1,0 +1,38 @@
+{
+  "name": "odg-processor",
+  "version": "1.0.0",
+  "description": "A Node.js package for processing ODG (OpenDocument Graphics) files using LibreOffice API",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "odg",
+    "libreoffice",
+    "opendocument",
+    "pdf",
+    "document-processing"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "child_process": "^1.0.2"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/odg-processor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/odg-processor/issues"
+  },
+  "homepage": "https://github.com/yourusername/odg-processor#readme",
+  "files": [
+    "index.js",
+    "python/",
+    "README.md",
+    "CHANGELOG.md"
+  ]
+}
