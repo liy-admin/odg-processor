@@ -23,12 +23,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/odg-processor.git"
+    "url": "https://github.com/kol-admin/odg-processor.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/odg-processor/issues"
+    "url": "https://github.com/kol-admin/odg-processor/issues"
   },
-  "homepage": "https://github.com/yourusername/odg-processor#readme",
+  "homepage": "https://github.com/kol-admin/odg-processor#readme",
   "files": [
     "index.js",
     "python/",
