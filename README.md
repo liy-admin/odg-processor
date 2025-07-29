@@ -255,6 +255,27 @@ processPayroll([
 ]);
 ```
 
+## 测试
+
+项目包含完整的测试套件，用于验证ODG操作功能。
+
+### 运行测试
+
+```bash
+# Python测试套件
+python tests/test_odg_operations.py
+
+# Node.js测试套件  
+node tests/test_odg_operations.js
+```
+
+测试将验证：
+- 环境配置（UNO模块、LibreOffice安装）
+- 基本功能（文件读取、文档创建）
+- 高级功能（文本修改、PDF导出）
+
+详细的测试说明请参考：[tests/README.md](tests/README.md)
+
 ## 许可证
 
 MIT

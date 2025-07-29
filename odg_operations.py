@@ -549,7 +549,7 @@ def main():
     processor = ODGProcessor()
     
     # 获取ODG文件信息
-    odg_file = 'payroll.odg'
+    odg_file = 'revolut.odg'
     print(f"目标文件: {odg_file}")
     print(f"文件绝对路径: {os.path.abspath(odg_file)}")
     print(f"文件是否存在: {os.path.exists(odg_file)}")

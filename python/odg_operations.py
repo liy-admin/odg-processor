@@ -255,50 +255,94 @@ class ODGProcessor:
                 print("没有打开的文档")
                 return False
             
+            # 确保输出目录存在
+            output_dir = os.path.dirname(os.path.abspath(output_path))
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+            
             url = uno.systemPathToFileUrl(os.path.abspath(output_path))
             print(f"导出为PDF: {url}")
             
-            # 方法1：使用标准的PDF导出过滤器
+            # 方法1：使用标准的PDF导出过滤器 (最兼容的方法)
             try:
                 filter_data = (
                     PropertyValue("FilterName", 0, "draw_pdf_Export", 0),
                     PropertyValue("Overwrite", 0, True, 0),
+                    PropertyValue("Quality", 0, 90, 0),  # 添加质量设置
                 )
                 self.document.storeToURL(url, filter_data)
-                print(f"已导出为PDF: {output_path}")
+                
+                # 验证文件是否真的被创建
+                if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+                    print(f"已导出为PDF: {output_path} (大小: {os.path.getsize(output_path)} 字节)")
                 return True
+                else:
+                    print(f"PDF文件创建失败或为空: {output_path}")
+                    
             except Exception as e1:
                 print(f"方法1失败: {e1}")
                 
-                # 方法2：尝试使用exportAsPDF方法
+                # 方法2：使用exportAsPDF方法
                 try:
                     if hasattr(self.document, 'exportAsPDF'):
                         pdf_properties = (
                             PropertyValue("URL", 0, url, 0),
-                            PropertyValue("FilterName", 0, "writer_pdf_Export", 0),
+                            PropertyValue("FilterName", 0, "draw_pdf_Export", 0),  # 使用draw而不是writer
+                            PropertyValue("Quality", 0, 90, 0),
                         )
                         self.document.exportAsPDF(pdf_properties)
-                        print(f"已导出为PDF (方法2): {output_path}")
+                        
+                        if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+                            print(f"已导出为PDF (方法2): {output_path} (大小: {os.path.getsize(output_path)} 字节)")
                         return True
+                        else:
+                            print(f"方法2: PDF文件创建失败或为空: {output_path}")
+                            
                 except Exception as e2:
                     print(f"方法2失败: {e2}")
                     
-                    # 方法3：使用通用导出方法
+                    # 方法3：使用另一种过滤器名称
                     try:
-                        # 创建PDF导出器
                         export_filter = (
-                            PropertyValue("FilterName", 0, "draw_pdf_Export", 0),
-                            PropertyValue("FilterData", 0, (), 0),
+                            PropertyValue("FilterName", 0, "impress_pdf_Export", 0),  # 尝试使用impress过滤器
+                            PropertyValue("Overwrite", 0, True, 0),
+                            PropertyValue("Quality", 0, 90, 0),
                         )
                         self.document.storeToURL(url, export_filter)
-                        print(f"已导出为PDF (方法3): {output_path}")
+                        
+                        if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+                            print(f"已导出为PDF (方法3): {output_path} (大小: {os.path.getsize(output_path)} 字节)")
                         return True
+                        else:
+                            print(f"方法3: PDF文件创建失败或为空: {output_path}")
+                            
                     except Exception as e3:
                         print(f"方法3失败: {e3}")
+                        
+                        # 方法4：最基本的导出方法
+                        try:
+                            basic_filter = (
+                                PropertyValue("FilterName", 0, "PDF - Portable Document Format", 0),
+                                PropertyValue("Overwrite", 0, True, 0),
+                            )
+                            self.document.storeToURL(url, basic_filter)
+                            
+                            if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+                                print(f"已导出为PDF (方法4): {output_path} (大小: {os.path.getsize(output_path)} 字节)")
+                                return True
+                            else:
+                                print(f"方法4: PDF文件创建失败或为空: {output_path}")
+                                
+                        except Exception as e4:
+                            print(f"方法4失败: {e4}")
+                            print("所有PDF导出方法都失败了")
                         return False
             
         except Exception as e:
             print(f"导出PDF失败: {e}")
+            print(f"错误类型: {type(e)}")
+            import traceback
+            traceback.print_exc()
             return False
 
     def get_odg_info(self, file_path):
@@ -503,6 +547,7 @@ class ODGProcessor:
             
             if result["modified_count"] > 0:
                 # 保存文档
+                try:
                 if output_path:
                     save_url = uno.systemPathToFileUrl(os.path.abspath(output_path))
                     self.document.storeAsUrl(save_url, ())
@@ -511,19 +556,45 @@ class ODGProcessor:
                     # 导出为PDF
                     if export_pdf:
                         pdf_path = output_path.replace('.odg', '.pdf')
+                            print(f"尝试导出PDF到: {pdf_path}")
                         if self.export_to_pdf(pdf_path):
                             result["pdf_path"] = pdf_path
+                                print(f"PDF导出成功: {pdf_path}")
+                            else:
+                                print(f"PDF导出失败: {pdf_path}")
+                                result["pdf_export_error"] = "PDF导出失败"
                 else:
                     self.document.store()
-                    # print("已保存修改到原文件 payroll.odg")
+                        print("已保存修改到原文件")
                     
                     # 导出为PDF（使用原文件名）
                     if export_pdf:
                         pdf_path = file_path.replace('.odg', '.pdf')
+                            print(f"尝试导出PDF到: {pdf_path}")
+                            if self.export_to_pdf(pdf_path):
+                                result["pdf_path"] = pdf_path
+                                print(f"PDF导出成功: {pdf_path}")
+                            else:
+                                print(f"PDF导出失败: {pdf_path}")
+                                result["pdf_export_error"] = "PDF导出失败"
+                    
+                    print(f"总共修改了 {result['modified_count']} 个形状")
+                    
+                except Exception as save_error:
+                    print(f"保存文档时发生错误: {save_error}")
+                    result["save_error"] = str(save_error)
+                    # 即使保存失败，也尝试导出PDF
+                    if export_pdf:
+                        pdf_path = (output_path or file_path).replace('.odg', '.pdf')
+                        print(f"尝试直接导出PDF到: {pdf_path}")
                         if self.export_to_pdf(pdf_path):
                             result["pdf_path"] = pdf_path
-                
-                print(f"总共修改了 {result['modified_count']} 个形状")
+                            print(f"PDF导出成功: {pdf_path}")
+                        else:
+                            print(f"PDF导出失败: {pdf_path}")
+                            result["pdf_export_error"] = "PDF导出失败"
+            else:
+                print("没有修改任何形状，跳过保存和PDF导出")
             
             if result["not_found_shapes"]:
                 print(f"未找到的形状: {', '.join(result['not_found_shapes'])}")

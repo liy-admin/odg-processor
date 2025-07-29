@@ -4,6 +4,30 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# 测试文件和临时文件
+test*.js
+test*.py
+example*.js
+example*.py
+debug*.py
+*test*.odg
+*test*.pdf
+payroll.odg
+payroll.pdf
+payroll_*.odg
+payroll_*.pdf
+test_export.pdf
+test_standalone.pdf
+*.tmp
+*.test
+
+# 测试输出目录 - 保留测试脚本，排除输出文件
+tests/*.odg
+tests/*.pdf
+tests/*.tmp
+tests/test_*
+tests/*_output.*
+tests/test_report.json
 # Runtime data
 pids
 *.pid
