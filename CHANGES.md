@@ -176,6 +176,34 @@ node tests/test_odg_operations.js
 3. **清晰的项目结构**：测试文件统一组织，避免项目根目录混乱
 4. **详细的诊断信息**：出现问题时可以快速定位和解决
 
+## 紧急修复 (2024)
+
+### 语法错误修复
+在改进PDF导出功能时引入了一些Python语法错误，已全部修复：
+
+1. **缩进错误修复**：
+   - 修复了 `export_to_pdf` 方法中多个return语句的缩进问题
+   - 修复了 `modify_text_by_shape_names` 方法中保存逻辑的缩进混乱
+
+2. **语法结构修复**：
+   - 所有 if-else 语句的 return 位置正确对齐
+   - try-except 代码块结构完整
+   - 确保所有代码块正确嵌套
+
+3. **测试文件整理**：
+   - 删除了根目录的 `test.js` 文件（已移至 `tests/` 目录）
+   - 创建了 `verify_syntax.py` 用于语法验证
+
+### 验证方法
+```bash
+# 验证Python语法
+python verify_syntax.py
+
+# 运行完整测试
+python tests/test_odg_operations.py
+node tests/test_odg_operations.js
+```
+
 ## 向后兼容性
 
 所有的API接口保持不变，现有的代码无需修改即可享受这些改进。唯一的变化是PDF导出功能变得更加可靠和健壮。 

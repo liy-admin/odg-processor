@@ -275,7 +275,7 @@ class ODGProcessor:
                 # 验证文件是否真的被创建
                 if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
                     print(f"已导出为PDF: {output_path} (大小: {os.path.getsize(output_path)} 字节)")
-                return True
+                    return True
                 else:
                     print(f"PDF文件创建失败或为空: {output_path}")
                     
@@ -294,7 +294,7 @@ class ODGProcessor:
                         
                         if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
                             print(f"已导出为PDF (方法2): {output_path} (大小: {os.path.getsize(output_path)} 字节)")
-                        return True
+                            return True
                         else:
                             print(f"方法2: PDF文件创建失败或为空: {output_path}")
                             
@@ -312,7 +312,7 @@ class ODGProcessor:
                         
                         if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
                             print(f"已导出为PDF (方法3): {output_path} (大小: {os.path.getsize(output_path)} 字节)")
-                        return True
+                            return True
                         else:
                             print(f"方法3: PDF文件创建失败或为空: {output_path}")
                             
@@ -336,7 +336,7 @@ class ODGProcessor:
                         except Exception as e4:
                             print(f"方法4失败: {e4}")
                             print("所有PDF导出方法都失败了")
-                        return False
+                            return False
             
         except Exception as e:
             print(f"导出PDF失败: {e}")
@@ -548,28 +548,28 @@ class ODGProcessor:
             if result["modified_count"] > 0:
                 # 保存文档
                 try:
-                if output_path:
-                    save_url = uno.systemPathToFileUrl(os.path.abspath(output_path))
-                    self.document.storeAsUrl(save_url, ())
-                    print(f"已保存修改后的ODG文件到: {output_path}")
-                    
-                    # 导出为PDF
-                    if export_pdf:
-                        pdf_path = output_path.replace('.odg', '.pdf')
+                    if output_path:
+                        save_url = uno.systemPathToFileUrl(os.path.abspath(output_path))
+                        self.document.storeAsUrl(save_url, ())
+                        print(f"已保存修改后的ODG文件到: {output_path}")
+                        
+                        # 导出为PDF
+                        if export_pdf:
+                            pdf_path = output_path.replace('.odg', '.pdf')
                             print(f"尝试导出PDF到: {pdf_path}")
-                        if self.export_to_pdf(pdf_path):
-                            result["pdf_path"] = pdf_path
+                            if self.export_to_pdf(pdf_path):
+                                result["pdf_path"] = pdf_path
                                 print(f"PDF导出成功: {pdf_path}")
                             else:
                                 print(f"PDF导出失败: {pdf_path}")
                                 result["pdf_export_error"] = "PDF导出失败"
-                else:
-                    self.document.store()
+                    else:
+                        self.document.store()
                         print("已保存修改到原文件")
                     
-                    # 导出为PDF（使用原文件名）
-                    if export_pdf:
-                        pdf_path = file_path.replace('.odg', '.pdf')
+                        # 导出为PDF（使用原文件名）
+                        if export_pdf:
+                            pdf_path = file_path.replace('.odg', '.pdf')
                             print(f"尝试导出PDF到: {pdf_path}")
                             if self.export_to_pdf(pdf_path):
                                 result["pdf_path"] = pdf_path
